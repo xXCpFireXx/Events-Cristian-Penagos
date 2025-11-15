@@ -15,6 +15,7 @@ public interface EventMapper {
     @Mapping(target = "idVenueEvent", source = "idVenue")
     Event toEntity(EventRequestDTO request);
 
+    @Mapping(target = "id", source = "event.id")
     @Mapping(target = "venue", source = "venueResponse")
     EventResponseDTO toEventResponse(Event event, VenueResponseDTO venueResponse);
 }

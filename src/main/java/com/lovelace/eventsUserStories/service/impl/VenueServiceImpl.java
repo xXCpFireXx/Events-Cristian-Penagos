@@ -1,4 +1,63 @@
 package com.lovelace.eventsUserStories.service.impl;
 
-public class VenueServiceImpl {
+import com.lovelace.eventsUserStories.domain.Venue;
+import com.lovelace.eventsUserStories.dto.VenueRequestDTO;
+import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
+import com.lovelace.eventsUserStories.exception.ResourceNotFoundException;
+import com.lovelace.eventsUserStories.mapper.VenueMapper;
+import com.lovelace.eventsUserStories.repository.interfaces.IVenueRepository;
+import com.lovelace.eventsUserStories.service.interfaces.IVenueService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class VenueServiceImpl implements IVenueService {
+
+    private final IVenueRepository venueRepository;
+    private final VenueMapper venueMapper;
+
+    @Override
+    public VenueResponseDTO createVenue(VenueRequestDTO requestDTO) {
+        Venue venue = venueMapper.toEntity(requestDTO);
+        Venue savedVenue = venueRepository.save(venue);
+        return venueMapper.toResponseDTO(savedVenue);
+    }
+
+    @Override
+    public List<VenueResponseDTO> getAllVenues() {
+        return venueRepository.findAll()
+                .stream()
+                .map(venueMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public VenueResponseDTO getVenueById(Long id) {
+        Venue venue = venueRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Venue not found with id: " + id));
+        return venueMapper.toResponseDTO(venue);
+    }
+
+    @Override
+    public VenueResponseDTO updateVenue(Long id, VenueRequestDTO requestDTO) {
+        if (!venueRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Venue not found with id: " + id);
+        }
+        Venue venueToUpdate = venueMapper.toEntity(requestDTO);
+        venueToUpdate.setId(id);
+
+        Venue updatedVenue = venueRepository.save(venueToUpdate);
+        return venueMapper.toResponseDTO(updatedVenue);
+    }
+
+    @Override
+    public void deleteVenue(Long id) {
+        if (!venueRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Venue not found with id: " + id);
+        }
+        venueRepository.deleteById(id);
+    }
 }

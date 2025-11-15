@@ -3,12 +3,14 @@ package com.lovelace.eventsUserStories.repository.impl;
 import com.lovelace.eventsUserStories.domain.Event;
 import com.lovelace.eventsUserStories.domain.Venue;
 import com.lovelace.eventsUserStories.repository.interfaces.IVenueRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Repository
 public class VenueRepositoryImpl implements IVenueRepository {
 
     private final List<Venue> listVenues = new ArrayList<>();
