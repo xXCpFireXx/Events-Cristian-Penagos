@@ -3,17 +3,15 @@ package com.lovelace.eventsUserStories.domain;
 public class Event {
     private Long id;
     private String nameEvent;
+    private Long idVenueEvent;
 
     public Event() {
     }
 
-    public Event(String nameEvent) {
-        this.nameEvent = nameEvent;
-    }
-
-    public Event(Long id, String nameEvent) {
+    public Event(Long id, String nameEvent, Long idVenueEvent) {
         this.id = id;
         this.nameEvent = nameEvent;
+        this.idVenueEvent = idVenueEvent;
     }
 
     public Long getId() {
@@ -30,5 +28,13 @@ public class Event {
 
     public void setNameEvent(String nameEvent) {
         this.nameEvent = nameEvent;
+    }
+
+    public Long getIdVenueEvent() {
+        return idVenueEvent;
+    }
+
+    public void setIdVenueEvent(Long idVenueEvent) {
+        this.idVenueEvent = idVenueEvent;
     }
 }
