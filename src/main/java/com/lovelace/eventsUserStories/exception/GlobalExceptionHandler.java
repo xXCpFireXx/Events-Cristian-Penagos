@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    // Manejo para recursos duplicados (Punto 3)
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<Map<String, String>> handleDuplicateResourceException(DuplicateResourceException ex) {
         Map<String, String> body = new HashMap<>();
@@ -50,13 +49,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    // Solución al Punto 1: Evitar Information Disclosure
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, String>> handleInvalidJson(HttpMessageNotReadableException ex) {
         Map<String, String> body = new HashMap<>();
         body.put("status", "400");
         body.put("error", "Bad Request");
-        body.put("message", "El cuerpo JSON enviado está mal formado o contiene valores inválidos.");
+        body.put("message", "Malformed JSON request or invalid values.");
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
