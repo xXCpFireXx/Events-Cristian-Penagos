@@ -3,6 +3,7 @@ package com.lovelace.eventsUserStories.service.impl;
 import com.lovelace.eventsUserStories.domain.Venue;
 import com.lovelace.eventsUserStories.dto.VenueRequestDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
+import com.lovelace.eventsUserStories.exception.DuplicateResourceException;
 import com.lovelace.eventsUserStories.exception.ResourceNotFoundException;
 import com.lovelace.eventsUserStories.mapper.VenueMapper;
 import com.lovelace.eventsUserStories.repository.interfaces.IVenueRepository;
@@ -22,6 +23,10 @@ public class VenueServiceImpl implements IVenueService {
 
     @Override
     public VenueResponseDTO createVenue(VenueRequestDTO requestDTO) {
+        if (venueRepository.existsByNameVenue(requestDTO.getNameVenue())) {
+            throw new DuplicateResourceException("A venue with the name " + requestDTO.getNameVenue() + "already exists" );
+        }
+
         Venue venue = venueMapper.toEntity(requestDTO);
         Venue savedVenue = venueRepository.save(venue);
         return venueMapper.toResponseDTO(savedVenue);

@@ -55,4 +55,10 @@ public class VenueRepositoryImpl implements IVenueRepository {
         return listVenues.stream()
                 .anyMatch(v -> v.getId().equals(id));
     }
+
+    @Override
+    public boolean existsByNameVenue(String nameVenue) {
+        return listVenues.stream()
+                .anyMatch(v -> v.getNameVenue().equalsIgnoreCase(nameVenue));
+    }
 }
