@@ -1,6 +1,6 @@
 package com.lovelace.eventsUserStories.service.impl;
 
-import com.lovelace.eventsUserStories.domain.Venue;
+import com.lovelace.eventsUserStories.model.Venue;
 import com.lovelace.eventsUserStories.dto.VenueRequestDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
 import com.lovelace.eventsUserStories.exception.DuplicateResourceException;

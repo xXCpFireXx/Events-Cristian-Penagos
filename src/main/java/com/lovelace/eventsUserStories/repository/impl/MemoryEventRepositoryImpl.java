@@ -1,6 +1,6 @@
 package com.lovelace.eventsUserStories.repository.impl;
 
-import com.lovelace.eventsUserStories.domain.Event;
+import com.lovelace.eventsUserStories.model.Event;
 import com.lovelace.eventsUserStories.repository.interfaces.IEventRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 @Repository
-public class EventRepositoryImpl implements IEventRepository {
+public class MemoryEventRepositoryImpl implements IEventRepository {
 
     private final List<Event> listEvents = new ArrayList<>();
     private final AtomicLong sequence = new AtomicLong(1L);

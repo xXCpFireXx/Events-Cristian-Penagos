@@ -1,6 +1,6 @@
 package com.lovelace.eventsUserStories.repository.interfaces;
 
-import com.lovelace.eventsUserStories.domain.Event;
+import com.lovelace.eventsUserStories.model.Event;
 
 import java.util.List;
 import java.util.Optional;

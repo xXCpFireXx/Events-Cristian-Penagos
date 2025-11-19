@@ -1,6 +1,6 @@
 package com.lovelace.eventsUserStories.mapper;
 
-import com.lovelace.eventsUserStories.domain.Event;
+import com.lovelace.eventsUserStories.model.Event;
 import com.lovelace.eventsUserStories.dto.EventRequestDTO;
 import com.lovelace.eventsUserStories.dto.EventResponseDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-18T17:07:44-0500",
+    date = "2025-11-19T09:50:46-0500",
     comments = "version: 1.6.0, compiler: javac, environment: Java 21.0.9 (Amazon.com Inc.)"
 )
 @Component

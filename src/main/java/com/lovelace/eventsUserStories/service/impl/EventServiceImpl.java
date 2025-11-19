@@ -1,6 +1,6 @@
 package com.lovelace.eventsUserStories.service.impl;
 
-import com.lovelace.eventsUserStories.domain.Event;
+import com.lovelace.eventsUserStories.model.Event;
 import com.lovelace.eventsUserStories.dto.EventRequestDTO;
 import com.lovelace.eventsUserStories.dto.EventResponseDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;

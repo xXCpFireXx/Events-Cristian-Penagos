@@ -1,4 +1,4 @@
-package com.lovelace.eventsUserStories.domain;
+package com.lovelace.eventsUserStories.model;
 
 public class Event {
     private Long id;
