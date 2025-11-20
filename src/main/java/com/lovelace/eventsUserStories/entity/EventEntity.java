@@ -11,10 +11,10 @@ public class EventEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, name = "name")
+    @Column(nullable = false, unique = true, name = "name_event")
     private String nameEvent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_venue", nullable = false)
-    private Long idVenueEvent;
+    private VenueEntity venue;
 }

@@ -29,21 +29,20 @@ public class VenueServiceImpl implements IVenueService {
 
         Venue venue = venueMapper.toEntity(requestDTO);
         Venue savedVenue = venueRepository.save(venue);
-        return venueMapper.toResponseDTO(savedVenue);
+        return venueMapper.toResponse(savedVenue);
     }
 
     @Override
     public List<VenueResponseDTO> getAllVenues() {
-        return venueRepository.findAll()
-                .stream()
-                .map(venueMapper::toResponseDTO)
+        return venueRepository.findAll().stream()
+                .map(venueMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     public VenueResponseDTO getVenueById(Long id) {
         Venue venue = venueRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Venue not found with id: " + id));
-        return venueMapper.toResponseDTO(venue);
+        return venueMapper.toResponse(venue);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class VenueServiceImpl implements IVenueService {
         venueToUpdate.setId(id);
 
         Venue updatedVenue = venueRepository.save(venueToUpdate);
-        return venueMapper.toResponseDTO(updatedVenue);
+        return venueMapper.toResponse(updatedVenue);
     }
 
     @Override

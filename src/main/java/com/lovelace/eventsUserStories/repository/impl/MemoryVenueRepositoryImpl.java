@@ -2,6 +2,7 @@ package com.lovelace.eventsUserStories.repository.impl;
 
 import com.lovelace.eventsUserStories.model.Venue;
 import com.lovelace.eventsUserStories.repository.interfaces.IVenueRepository;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
+@Profile("dev")
 public class MemoryVenueRepositoryImpl implements IVenueRepository {
 
     private final List<Venue> listVenues = new ArrayList<>();
@@ -18,30 +20,21 @@ public class MemoryVenueRepositoryImpl implements IVenueRepository {
     @Override
     public Venue save(Venue venue) {
         if (venue.getId() == null || venue.getId() == 0L) {
-            long newId = sequence.getAndIncrement();
-            venue.setId(newId);
+            venue.setId(sequence.getAndIncrement());
+            listVenues.add(venue);
         } else {
-            for (int i = 0; i < listVenues.size(); i++) {
-                if (listVenues.get(i).getId().equals(venue.getId())) {
-                    listVenues.set(i, venue);
-                    return venue;
-                }
-            }
+            deleteById(venue.getId());
+            listVenues.add(venue);
         }
-        listVenues.add(venue);
         return venue;
     }
 
     @Override
-    public List<Venue> findAll() {
-        return new ArrayList<>(listVenues);
-    }
+    public List<Venue> findAll() { return new ArrayList<>(listVenues); }
 
     @Override
     public Optional<Venue> findById(Long id) {
-        return listVenues.stream()
-                .filter(v -> v.getId().equals(id))
-                .findFirst();
+        return listVenues.stream().filter(v -> v.getId().equals(id)).findFirst();
     }
 
     @Override
@@ -51,8 +44,7 @@ public class MemoryVenueRepositoryImpl implements IVenueRepository {
 
     @Override
     public boolean existsById(Long id) {
-        return listVenues.stream()
-                .anyMatch(v -> v.getId().equals(id));
+        return listVenues.stream().anyMatch(v -> v.getId().equals(id));
     }
 
     @Override

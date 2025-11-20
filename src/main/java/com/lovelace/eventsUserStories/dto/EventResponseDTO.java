@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data // <-- Si usas Lombok
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventResponseDTO {
