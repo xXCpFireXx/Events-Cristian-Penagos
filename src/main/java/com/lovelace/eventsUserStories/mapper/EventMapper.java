@@ -1,21 +1,25 @@
 package com.lovelace.eventsUserStories.mapper;
 
-import com.lovelace.eventsUserStories.domain.Event;
+import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
+import com.lovelace.eventsUserStories.entity.EventEntity;
+import com.lovelace.eventsUserStories.model.Event;
 import com.lovelace.eventsUserStories.dto.EventRequestDTO;
 import com.lovelace.eventsUserStories.dto.EventResponseDTO;
-import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface EventMapper {
+    @Mapping(source = "idVenue", target = "idVenueEvent")
+    Event toEntity(EventRequestDTO dto);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "idVenueEvent", source = "idVenue")
-    Event toEntity(EventRequestDTO request);
+    @Mapping(source = "event.id", target = "id")
+    @Mapping(source = "venue", target = "venue")
+    EventResponseDTO toEventResponse(Event event, VenueResponseDTO venue);
 
-    @Mapping(target = "id", source = "event.id")
-    @Mapping(target = "venue", source = "venueResponse")
-    EventResponseDTO toEventResponse(Event event, VenueResponseDTO venueResponse);
+    @Mapping(target = "venue", ignore = true)
+    EventEntity modelToEntity(Event event);
+
+    @Mapping(source = "venue.id", target = "idVenueEvent")
+    Event entityToModel(EventEntity entity);
 }

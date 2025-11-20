@@ -1,6 +1,7 @@
 package com.lovelace.eventsUserStories.service.impl;
 
-import com.lovelace.eventsUserStories.domain.Event;
+import com.lovelace.eventsUserStories.exception.DuplicateResourceException;
+import com.lovelace.eventsUserStories.model.Event;
 import com.lovelace.eventsUserStories.dto.EventRequestDTO;
 import com.lovelace.eventsUserStories.dto.EventResponseDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
@@ -10,8 +11,10 @@ import com.lovelace.eventsUserStories.repository.interfaces.IEventRepository;
 import com.lovelace.eventsUserStories.service.interfaces.IEventService;
 import com.lovelace.eventsUserStories.service.interfaces.IVenueService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,10 @@ public class EventServiceImpl implements IEventService {
 
     @Override
     public EventResponseDTO createEvent(EventRequestDTO requestDTO) {
+        if (eventRepository.existsByNameEvent(requestDTO.getNameEvent())) {
+            throw new DuplicateResourceException("Event name already exists: " + requestDTO.getNameEvent());
+        }
+
         VenueResponseDTO venueDTO = venueService.getVenueById(requestDTO.getIdVenue());
 
         Event event = eventMapper.toEntity(requestDTO);
@@ -34,11 +41,9 @@ public class EventServiceImpl implements IEventService {
     }
 
     @Override
-    public List<EventResponseDTO> getAllEvents() {
-        return eventRepository.findAll()
-                .stream()
-                .map(this::mapEventToResponseDTO)
-                .collect(Collectors.toList());
+    public Page<EventResponseDTO> getAllEvents(Pageable pageable) {
+        return eventRepository.findAll(pageable)
+                .map(this::mapEventToResponseDTO);
     }
 
     @Override
@@ -55,6 +60,7 @@ public class EventServiceImpl implements IEventService {
         }
 
         VenueResponseDTO venueDTO = venueService.getVenueById(requestDTO.getIdVenue());
+
         Event eventToUpdate = eventMapper.toEntity(requestDTO);
         eventToUpdate.setId(id);
 
