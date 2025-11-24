@@ -1,7 +1,7 @@
 package com.lovelace.eventsUserStories.repository.impl;
 
-import com.lovelace.eventsUserStories.model.Event;
-import com.lovelace.eventsUserStories.repository.interfaces.IEventRepository;
+import com.lovelace.eventsUserStories.domain.model.Event;
+import com.lovelace.eventsUserStories.domain.ports.out.EventRepositoryPort;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 @Repository
 @Profile("dev")
-public class MemoryEventRepositoryImpl implements IEventRepository {
+public class MemoryEventRepositoryImpl implements EventRepositoryPort {
 
     private final List<Event> listEvents = new ArrayList<>();
     private final AtomicLong sequence = new AtomicLong(1L);

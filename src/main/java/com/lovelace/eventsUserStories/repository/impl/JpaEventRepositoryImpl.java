@@ -2,11 +2,11 @@ package com.lovelace.eventsUserStories.repository.impl;
 
 import com.lovelace.eventsUserStories.entity.EventEntity;
 import com.lovelace.eventsUserStories.entity.VenueEntity;
-import com.lovelace.eventsUserStories.exception.ResourceNotFoundException;
+import com.lovelace.eventsUserStories.domain.exception.ResourceNotFoundException;
 import com.lovelace.eventsUserStories.mapper.EventMapper;
-import com.lovelace.eventsUserStories.model.Event;
+import com.lovelace.eventsUserStories.domain.model.Event;
 import com.lovelace.eventsUserStories.repository.interfaces.EventJpaRepository;
-import com.lovelace.eventsUserStories.repository.interfaces.IEventRepository;
+import com.lovelace.eventsUserStories.domain.ports.out.EventRepositoryPort;
 import com.lovelace.eventsUserStories.repository.interfaces.VenueJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Repository
 @Profile("jpa")
 @RequiredArgsConstructor
-public class JpaEventRepositoryImpl implements IEventRepository {
+public class JpaEventRepositoryImpl implements EventRepositoryPort {
 
     private final EventJpaRepository jpaEventRepository;
     private final VenueJpaRepository venueJpaRepository;

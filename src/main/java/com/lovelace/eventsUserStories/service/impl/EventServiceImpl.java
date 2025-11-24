@@ -1,13 +1,13 @@
 package com.lovelace.eventsUserStories.service.impl;
 
-import com.lovelace.eventsUserStories.exception.DuplicateResourceException;
-import com.lovelace.eventsUserStories.model.Event;
+import com.lovelace.eventsUserStories.domain.exception.DuplicateResourceException;
+import com.lovelace.eventsUserStories.domain.model.Event;
 import com.lovelace.eventsUserStories.dto.EventRequestDTO;
 import com.lovelace.eventsUserStories.dto.EventResponseDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
-import com.lovelace.eventsUserStories.exception.ResourceNotFoundException;
+import com.lovelace.eventsUserStories.domain.exception.ResourceNotFoundException;
 import com.lovelace.eventsUserStories.mapper.EventMapper;
-import com.lovelace.eventsUserStories.repository.interfaces.IEventRepository;
+import com.lovelace.eventsUserStories.domain.ports.out.EventRepositoryPort;
 import com.lovelace.eventsUserStories.service.interfaces.IEventService;
 import com.lovelace.eventsUserStories.service.interfaces.IVenueService;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +15,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements IEventService {
 
-    private final IEventRepository eventRepository;
+    private final EventRepositoryPort eventRepository;
     private final EventMapper eventMapper;
     private final IVenueService venueService;
 

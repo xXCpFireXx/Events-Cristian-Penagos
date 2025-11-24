@@ -2,8 +2,8 @@ package com.lovelace.eventsUserStories.repository.impl;
 
 import com.lovelace.eventsUserStories.entity.VenueEntity;
 import com.lovelace.eventsUserStories.mapper.VenueMapper;
-import com.lovelace.eventsUserStories.model.Venue;
-import com.lovelace.eventsUserStories.repository.interfaces.IVenueRepository;
+import com.lovelace.eventsUserStories.domain.model.Venue;
+import com.lovelace.eventsUserStories.domain.ports.out.VenueRepositoryPort;
 import com.lovelace.eventsUserStories.repository.interfaces.VenueJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Repository
 @Profile("jpa")
 @RequiredArgsConstructor
-public class JpaVenueRepositoryImpl implements IVenueRepository {
+public class JpaVenueRepositoryImpl implements VenueRepositoryPort {
     private final VenueJpaRepository venueJpaRepository;
     private final VenueMapper venueMapper;
 

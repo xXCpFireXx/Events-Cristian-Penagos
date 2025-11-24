@@ -1,4 +1,4 @@
-package com.lovelace.eventsUserStories.exception;
+package com.lovelace.eventsUserStories.domain.exception;
 
 public class DuplicateResourceException extends RuntimeException {
     public DuplicateResourceException(String message) {

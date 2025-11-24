@@ -2,7 +2,7 @@ package com.lovelace.eventsUserStories.mapper;
 
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
 import com.lovelace.eventsUserStories.entity.EventEntity;
-import com.lovelace.eventsUserStories.model.Event;
+import com.lovelace.eventsUserStories.domain.model.Event;
 import com.lovelace.eventsUserStories.dto.EventRequestDTO;
 import com.lovelace.eventsUserStories.dto.EventResponseDTO;
 import org.mapstruct.Mapper;

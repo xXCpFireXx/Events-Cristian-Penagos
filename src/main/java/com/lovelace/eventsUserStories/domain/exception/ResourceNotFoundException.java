@@ -1,4 +1,4 @@
-package com.lovelace.eventsUserStories.exception;
+package com.lovelace.eventsUserStories.domain.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

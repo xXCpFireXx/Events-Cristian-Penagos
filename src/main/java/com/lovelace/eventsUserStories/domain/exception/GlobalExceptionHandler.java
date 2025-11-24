@@ -1,4 +1,4 @@
-package com.lovelace.eventsUserStories.exception;
+package com.lovelace.eventsUserStories.domain.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

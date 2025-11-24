@@ -1,7 +1,7 @@
 package com.lovelace.eventsUserStories.repository.impl;
 
-import com.lovelace.eventsUserStories.model.Venue;
-import com.lovelace.eventsUserStories.repository.interfaces.IVenueRepository;
+import com.lovelace.eventsUserStories.domain.model.Venue;
+import com.lovelace.eventsUserStories.domain.ports.out.VenueRepositoryPort;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 @Profile("dev")
-public class MemoryVenueRepositoryImpl implements IVenueRepository {
+public class MemoryVenueRepositoryImpl implements VenueRepositoryPort {
 
     private final List<Venue> listVenues = new ArrayList<>();
     private final AtomicLong sequence = new AtomicLong(1L);
