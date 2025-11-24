@@ -1,4 +1,4 @@
-package com.lovelace.eventsUserStories.entity;
+package com.lovelace.eventsUserStories.infrastructure.adapters.out.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

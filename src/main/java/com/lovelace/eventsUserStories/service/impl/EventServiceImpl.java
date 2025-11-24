@@ -6,7 +6,7 @@ import com.lovelace.eventsUserStories.dto.EventRequestDTO;
 import com.lovelace.eventsUserStories.dto.EventResponseDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
 import com.lovelace.eventsUserStories.domain.exception.ResourceNotFoundException;
-import com.lovelace.eventsUserStories.mapper.EventMapper;
+import com.lovelace.eventsUserStories.infrastructure.adapters.in.web.mapper.EventMapper;
 import com.lovelace.eventsUserStories.domain.ports.out.EventRepositoryPort;
 import com.lovelace.eventsUserStories.service.interfaces.IEventService;
 import com.lovelace.eventsUserStories.service.interfaces.IVenueService;

@@ -1,9 +1,9 @@
-package com.lovelace.eventsUserStories.mapper;
+package com.lovelace.eventsUserStories.infrastructure.adapters.out.jpa.mapper;
 
-import com.lovelace.eventsUserStories.entity.VenueEntity;
 import com.lovelace.eventsUserStories.domain.model.Venue;
 import com.lovelace.eventsUserStories.dto.VenueRequestDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
+import com.lovelace.eventsUserStories.infrastructure.adapters.out.jpa.entity.VenueEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

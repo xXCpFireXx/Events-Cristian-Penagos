@@ -5,7 +5,7 @@ import com.lovelace.eventsUserStories.dto.VenueRequestDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;
 import com.lovelace.eventsUserStories.domain.exception.DuplicateResourceException;
 import com.lovelace.eventsUserStories.domain.exception.ResourceNotFoundException;
-import com.lovelace.eventsUserStories.mapper.VenueMapper;
+import com.lovelace.eventsUserStories.infrastructure.adapters.in.web.mapper.VenueMapper;
 import com.lovelace.eventsUserStories.domain.ports.out.VenueRepositoryPort;
 import com.lovelace.eventsUserStories.service.interfaces.IVenueService;
 import lombok.RequiredArgsConstructor;

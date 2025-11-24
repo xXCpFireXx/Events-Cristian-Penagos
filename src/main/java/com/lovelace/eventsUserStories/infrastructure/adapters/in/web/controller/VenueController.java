@@ -1,4 +1,4 @@
-package com.lovelace.eventsUserStories.controller;
+package com.lovelace.eventsUserStories.infrastructure.adapters.in.web.controller;
 
 import com.lovelace.eventsUserStories.dto.VenueRequestDTO;
 import com.lovelace.eventsUserStories.dto.VenueResponseDTO;

@@ -1,6 +1,6 @@
 package com.lovelace.eventsUserStories.repository.interfaces;
 
-import com.lovelace.eventsUserStories.entity.EventEntity;
+import com.lovelace.eventsUserStories.infrastructure.adapters.out.jpa.entity.EventEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 

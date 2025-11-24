@@ -1,9 +1,9 @@
 package com.lovelace.eventsUserStories.repository.impl;
 
-import com.lovelace.eventsUserStories.entity.EventEntity;
-import com.lovelace.eventsUserStories.entity.VenueEntity;
+import com.lovelace.eventsUserStories.infrastructure.adapters.out.jpa.entity.EventEntity;
+import com.lovelace.eventsUserStories.infrastructure.adapters.out.jpa.entity.VenueEntity;
 import com.lovelace.eventsUserStories.domain.exception.ResourceNotFoundException;
-import com.lovelace.eventsUserStories.mapper.EventMapper;
+import com.lovelace.eventsUserStories.infrastructure.adapters.in.web.mapper.EventMapper;
 import com.lovelace.eventsUserStories.domain.model.Event;
 import com.lovelace.eventsUserStories.repository.interfaces.EventJpaRepository;
 import com.lovelace.eventsUserStories.domain.ports.out.EventRepositoryPort;
