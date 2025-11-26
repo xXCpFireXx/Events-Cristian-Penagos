@@ -1,9 +1,7 @@
 package com.lovelace.eventsUserStories.infrastructure.config;
 
 import com.lovelace.eventsUserStories.application.usecase.event.*;
-import com.lovelace.eventsUserStories.application.usecase.venue.CreateVenueUseCaseImpl;
-import com.lovelace.eventsUserStories.application.usecase.venue.GetAllVenuesUseCaseImpl;
-import com.lovelace.eventsUserStories.application.usecase.venue.GetVenueByIdUseCaseImpl;
+import com.lovelace.eventsUserStories.application.usecase.venue.*;
 import com.lovelace.eventsUserStories.domain.ports.out.EventRepositoryPort;
 import com.lovelace.eventsUserStories.domain.ports.out.VenueRepositoryPort;
 import org.springframework.context.annotation.Bean;
@@ -54,12 +52,12 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public CreateVenueUseCaseImpl updateVenueUseCase(VenueRepositoryPort venueRepositoryPort) {
-        return new CreateVenueUseCaseImpl(venueRepositoryPort);
+    public UpdateVenueUseCaseImpl updateVenueUseCase(VenueRepositoryPort venueRepositoryPort) {
+        return new UpdateVenueUseCaseImpl(venueRepositoryPort);
     }
 
     @Bean
-    public CreateVenueUseCaseImpl deleteVenueUseCase(VenueRepositoryPort venueRepositoryPort) {
-        return new CreateVenueUseCaseImpl(venueRepositoryPort);
+    public DeleteVenueUseCaseImpl deleteVenueUseCase(VenueRepositoryPort venueRepositoryPort) {
+        return new DeleteVenueUseCaseImpl(venueRepositoryPort);
     }
 }
