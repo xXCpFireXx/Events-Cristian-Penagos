@@ -4,6 +4,8 @@ import com.lovelace.eventsUserStories.domain.model.Event;
 import com.lovelace.eventsUserStories.domain.ports.in.eventUseCases.UpdateEventUseCase;
 import com.lovelace.eventsUserStories.domain.ports.out.EventRepositoryPort;
 import com.lovelace.eventsUserStories.domain.ports.out.VenueRepositoryPort;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ public class UpdateEventUseCaseImpl implements UpdateEventUseCase {
     }
 
     @Override
+    @Transactional
     public Optional<Event> updateEvent(Long id, Event event) {
         if (!eventRepositoryPort.existsById(id)) {
             return Optional.empty();

@@ -5,6 +5,8 @@ import com.lovelace.eventsUserStories.domain.model.Event;
 import com.lovelace.eventsUserStories.domain.ports.in.eventUseCases.CreateEventUseCase;
 import com.lovelace.eventsUserStories.domain.ports.out.EventRepositoryPort;
 import com.lovelace.eventsUserStories.domain.ports.out.VenueRepositoryPort;
+import org.springframework.transaction.annotation.Transactional;
+
 
 public class CreateEventUseCaseImpl implements CreateEventUseCase {
 
@@ -17,6 +19,7 @@ public class CreateEventUseCaseImpl implements CreateEventUseCase {
     }
 
     @Override
+    @Transactional
     public Event createEvent(Event event) {
         if (eventRepositoryPort.existsByNameEvent(event.getNameEvent())) {
             throw new DuplicateResourceException("Event name " + event.getNameEvent() +" already exists");
