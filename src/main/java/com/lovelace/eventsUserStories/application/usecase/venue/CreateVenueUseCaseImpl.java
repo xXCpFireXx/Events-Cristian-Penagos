@@ -4,6 +4,7 @@ import com.lovelace.eventsUserStories.domain.exception.DuplicateResourceExceptio
 import com.lovelace.eventsUserStories.domain.model.Venue;
 import com.lovelace.eventsUserStories.domain.ports.in.venueUseCases.CreateVenueUseCase;
 import com.lovelace.eventsUserStories.domain.ports.out.VenueRepositoryPort;
+import org.springframework.transaction.annotation.Transactional;
 
 public class CreateVenueUseCaseImpl implements CreateVenueUseCase {
 
@@ -14,6 +15,7 @@ public class CreateVenueUseCaseImpl implements CreateVenueUseCase {
     }
 
     @Override
+    @Transactional
     public Venue createVenue(Venue venue) {
         if (venueRepositoryPort.existsByNameVenue(venue.getNameVenue())) {
             throw new DuplicateResourceException("Venue name " + venue.getNameVenue() +" already exists");

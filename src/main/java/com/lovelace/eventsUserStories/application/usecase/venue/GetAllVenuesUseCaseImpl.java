@@ -1,10 +1,9 @@
 package com.lovelace.eventsUserStories.application.usecase.venue;
 
-import com.lovelace.eventsUserStories.domain.model.Event;
 import com.lovelace.eventsUserStories.domain.model.Venue;
-import com.lovelace.eventsUserStories.domain.ports.in.eventUseCases.GetAllEventsUseCase;
 import com.lovelace.eventsUserStories.domain.ports.in.venueUseCases.GetAllVenueUseCase;
 import com.lovelace.eventsUserStories.domain.ports.out.VenueRepositoryPort;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ public class GetAllVenuesUseCaseImpl implements GetAllVenueUseCase {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Venue> getAllVenues(int page, int size) {
         return venueRepositoryPort.findAll(page,size);
     }

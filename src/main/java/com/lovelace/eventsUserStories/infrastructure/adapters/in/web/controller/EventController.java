@@ -48,21 +48,25 @@ public class EventController {
         return new ResponseEntity<>(eventWebMapper.toResponse(eventCreated), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get all events", description = "Retrieves a paginated list of all registered events.")
+    @Operation(summary = "Get all events with filters", description = "Retrieves a list of events, optionally filtered by venue ID or name.")
     @ApiResponse(responseCode = "200", description = "List of events retrieved successfully",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = EventResponseDTO.class)))
     @GetMapping
     public ResponseEntity<List<EventResponseDTO>> getAll(
-            @Parameter(description = "Page number (0-based index)", example = "0")
-            @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Filter by Venue ID")
+            @RequestParam(required = false) Long venueId,
 
-            @Parameter(description = "Size of the page", example = "10")
-            @RequestParam(defaultValue = "10") int size
+            @Parameter(description = "Filter by Event Name")
+            @RequestParam(required = false) String name
     ) {
-        List<Event> events = getAllEventsUseCase.getAllEvents(page, size);
+        // 1. Llamamos al caso de uso pasando los filtros (pueden ser nulos)
+        List<Event> events = getAllEventsUseCase.getAllEvents(venueId, name);
+
+        // 2. Convertimos la lista de Modelos a DTOs de respuesta
         List<EventResponseDTO> response = events.stream()
                 .map(eventWebMapper::toResponse)
                 .toList();
+
         return ResponseEntity.ok(response);
     }
 
