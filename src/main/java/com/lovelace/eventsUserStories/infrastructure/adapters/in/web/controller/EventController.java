@@ -1,5 +1,5 @@
 package com.lovelace.eventsUserStories.infrastructure.adapters.in.web.controller;
-
+import com.lovelace.eventsUserStories.domain.exception.ResourceNotFoundException;
 import com.lovelace.eventsUserStories.application.usecase.event.*;
 import com.lovelace.eventsUserStories.domain.model.Event;
 import com.lovelace.eventsUserStories.infrastructure.adapters.in.web.dto.EventRequestDTO;
@@ -80,7 +80,7 @@ public class EventController {
     public ResponseEntity<EventResponseDTO> getById(@Parameter(description = "ID of the event to be retrieved") @PathVariable Long id) {
         return getEventByIdUseCase.getEventById(id)
                 .map(event -> ResponseEntity.ok(eventWebMapper.toResponse(event)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));
     }
 
     @Operation(summary = "Update an event", description = "Updates the information of an existing event by its ID.")
@@ -98,8 +98,7 @@ public class EventController {
         Event eventInput = eventWebMapper.toDomain(requestDTO);
         return updateEventUseCase.updateEvent(id, eventInput)
                 .map(updated -> ResponseEntity.ok(eventWebMapper.toResponse(updated)))
-                .orElse(ResponseEntity.notFound().build());
-    }
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));    }
 
     @Operation(summary = "Delete an event", description = "Permanently removes an event from the database.")
     @ApiResponses(value = {
