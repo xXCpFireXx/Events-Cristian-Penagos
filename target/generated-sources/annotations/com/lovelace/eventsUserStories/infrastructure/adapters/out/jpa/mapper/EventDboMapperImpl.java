@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-27T10:16:38-0500",
+    date = "2025-12-01T08:27:49-0500",
     comments = "version: 1.6.0, compiler: javac, environment: Java 21.0.9 (Amazon.com Inc.)"
 )
 @Component
@@ -27,6 +27,8 @@ public class EventDboMapperImpl implements EventDboMapper {
         eventEntity.setVenue( eventToVenueEntity( domain ) );
         eventEntity.setId( domain.getId() );
         eventEntity.setNameEvent( domain.getNameEvent() );
+        eventEntity.setStartDate( domain.getStartDate() );
+        eventEntity.setEndDate( domain.getEndDate() );
 
         return eventEntity;
     }
@@ -42,6 +44,8 @@ public class EventDboMapperImpl implements EventDboMapper {
         event.setIdVenueEvent( entityVenueId( entity ) );
         event.setId( entity.getId() );
         event.setNameEvent( entity.getNameEvent() );
+        event.setStartDate( entity.getStartDate() );
+        event.setEndDate( entity.getEndDate() );
 
         return event;
     }

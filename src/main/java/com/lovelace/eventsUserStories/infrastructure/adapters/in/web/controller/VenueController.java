@@ -1,4 +1,5 @@
 package com.lovelace.eventsUserStories.infrastructure.adapters.in.web.controller;
+import com.lovelace.eventsUserStories.domain.exception.ResourceNotFoundException;
 
 import com.lovelace.eventsUserStories.application.usecase.venue.*;
 import com.lovelace.eventsUserStories.domain.model.Venue;
@@ -76,7 +77,7 @@ public class VenueController {
     public ResponseEntity<VenueResponseDTO> getById(@Parameter(description = "ID of the venue") @PathVariable Long id) {
         return getVenueByIdUseCase.getVenueById(id)
                 .map(venue -> ResponseEntity.ok(venueWebMapper.toResponse(venue)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Venue not found with id " + id));
     }
 
     @Operation(summary = "Update a venue", description = "Updates the information of an existing venue.")
@@ -94,7 +95,7 @@ public class VenueController {
         Venue venueInput = venueWebMapper.toDomain(requestDTO);
         return updateVenueUseCase.updateVenue(id, venueInput)
                 .map(updated -> ResponseEntity.ok(venueWebMapper.toResponse(updated)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Venue not found with id " + id));
     }
 
     @Operation(summary = "Delete a venue", description = "Permanently removes a venue from the database.")

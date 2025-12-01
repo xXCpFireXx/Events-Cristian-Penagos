@@ -1,61 +1,62 @@
 package com.lovelace.eventsUserStories.domain.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.URI;
+import java.time.Instant;
+import java.util.UUID;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
-        Map<String, String> body = new HashMap<>();
-        body.put("status", "404");
-        body.put("error", "Not Found");
-        body.put("message", ex.getMessage());
+    // Método auxiliar para construir el ProblemDetail estándar
+    private ProblemDetail buildProblemDetail(HttpStatus status, String detail) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, detail);
 
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+        // Agregamos los campos requeridos por tu HU5
+        problemDetail.setProperty("timestamp", Instant.now());
+        problemDetail.setProperty("traceId", UUID.randomUUID().toString());
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ProblemDetail handleResourceNotFoundException(ResourceNotFoundException ex) {
+        ProblemDetail problem = buildProblemDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problem.setTitle("Resource not found");
+        problem.setType(URI.create("https://eventsvenue-user-stories.com/errores/not-found"));
+        return problem;
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<Map<String, String>> handleDuplicateResourceException(DuplicateResourceException ex) {
-        Map<String, String> body = new HashMap<>();
-        body.put("status", "409");
-        body.put("error", "Conflict");
-        body.put("message", ex.getMessage());
-
-        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    public ProblemDetail handleDuplicateResourceException(DuplicateResourceException ex) {
+        ProblemDetail problem = buildProblemDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Resource conflict");
+        return problem;
     }
 
+    // Este maneja tus validaciones (incluyendo la de fechas que creamos)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                errors.put(error.getField(), error.getDefaultMessage())
-        );
+    public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex) {
+        ProblemDetail problem = buildProblemDetail(HttpStatus.BAD_REQUEST, "Error en la validación de datos");
+        problem.setTitle("Invalid data");
 
-        Map<String, Object> body = new HashMap<>();
-        body.put("status", "400");
-        body.put("error", "Bad Request");
-        body.put("messages", errors);
+        // Recopilar errores de campos específicos
+        problem.setProperty("errors", ex.getBindingResult().getFieldErrors().stream()
+                .map(err -> err.getDefaultMessage())
+                .toList());
 
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-    }
+        // Recopilar errores globales (como nuestra validación de fechas cruzadas)
+        if (ex.getBindingResult().hasGlobalErrors()) {
+            problem.setProperty("globalErrors", ex.getBindingResult().getGlobalErrors().stream()
+                    .map(err -> err.getDefaultMessage())
+                    .toList());
+        }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, String>> handleInvalidJson(HttpMessageNotReadableException ex) {
-        Map<String, String> body = new HashMap<>();
-        body.put("status", "400");
-        body.put("error", "Bad Request");
-        body.put("message", "Malformed JSON request or invalid values.");
-
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return problem;
     }
 }
