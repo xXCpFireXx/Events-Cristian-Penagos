@@ -5,6 +5,8 @@ import com.lovelace.eventsUserStories.domain.model.Event;
 import com.lovelace.eventsUserStories.infrastructure.adapters.in.web.dto.EventRequestDTO;
 import com.lovelace.eventsUserStories.infrastructure.adapters.in.web.dto.EventResponseDTO;
 import com.lovelace.eventsUserStories.infrastructure.adapters.in.web.mapper.EventWebMapper;
+import com.lovelace.eventsUserStories.infrastructure.adapters.in.web.validation.OnCreate;
+import com.lovelace.eventsUserStories.infrastructure.adapters.in.web.validation.OnUpdate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,10 +14,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,7 +45,7 @@ public class EventController {
             @ApiResponse(responseCode = "409", description = "Conflict: Event name already exists", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<EventResponseDTO> create(@Valid @RequestBody EventRequestDTO requestDTO) {
+    public ResponseEntity<EventResponseDTO> create(@Validated(OnCreate.class) @RequestBody EventRequestDTO requestDTO) {
         Event eventInput = eventWebMapper.toDomain(requestDTO);
         Event eventCreated = createEventUseCase.createEvent(eventInput);
         return new ResponseEntity<>(eventWebMapper.toResponse(eventCreated), HttpStatus.CREATED);
@@ -91,21 +94,23 @@ public class EventController {
             @ApiResponse(responseCode = "404", description = "Event or Venue not found", content = @Content)
     })
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EventResponseDTO> update(
             @Parameter(description = "ID of the event to be updated") @PathVariable Long id,
-            @Valid @RequestBody EventRequestDTO requestDTO) {
+            @Validated(OnUpdate.class) @RequestBody EventRequestDTO requestDTO) {
 
         Event eventInput = eventWebMapper.toDomain(requestDTO);
         return updateEventUseCase.updateEvent(id, eventInput)
                 .map(updated -> ResponseEntity.ok(eventWebMapper.toResponse(updated)))
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));    }
-
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id " + id));
+    }
     @Operation(summary = "Delete an event", description = "Permanently removes an event from the database.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Event deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Event not found", content = @Content)
     })
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> delete(@Parameter(description = "ID of the event to be deleted") @PathVariable Long id) {
         deleteEventUseCase.deleteEvent(id);
         return ResponseEntity.noContent().build();

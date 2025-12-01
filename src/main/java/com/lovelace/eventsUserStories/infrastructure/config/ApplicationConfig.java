@@ -4,12 +4,60 @@ import com.lovelace.eventsUserStories.application.usecase.event.*;
 import com.lovelace.eventsUserStories.application.usecase.venue.*;
 import com.lovelace.eventsUserStories.domain.ports.out.EventRepositoryPort;
 import com.lovelace.eventsUserStories.domain.ports.out.VenueRepositoryPort;
+import com.lovelace.eventsUserStories.infrastructure.adapters.out.jpa.repository.ISpringUserRepository;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+@RequiredArgsConstructor // Genera el constructor para inyectar userRepository
 public class ApplicationConfig {
 
+    // Inyectamos el repositorio para buscar usuarios en la DB
+    private final ISpringUserRepository userRepository;
+
+    // ========================================================================
+    // SECCIÓN NUEVA: SEGURIDAD (Esto es lo que faltaba)
+    // ========================================================================
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // ========================================================================
+    // SECCIÓN EXISTENTE: CASOS DE USO (Esto lo mantenemos igual)
+    // ========================================================================
+
+    // Eventos ----------------------------------------------------------------
     @Bean
     public CreateEventUseCaseImpl createEventUseCase(EventRepositoryPort eventRepositoryPort, VenueRepositoryPort venueRepositoryPort) {
         return new CreateEventUseCaseImpl(eventRepositoryPort, venueRepositoryPort);
@@ -35,7 +83,7 @@ public class ApplicationConfig {
         return new DeleteEventUseCaseImpl(eventRepositoryPort);
     }
 
-    // Venue --------------------------------------------------
+    // Venues ----------------------------------------------------------------
     @Bean
     public CreateVenueUseCaseImpl createVenueUseCase(VenueRepositoryPort venueRepositoryPort) {
         return new CreateVenueUseCaseImpl(venueRepositoryPort);
