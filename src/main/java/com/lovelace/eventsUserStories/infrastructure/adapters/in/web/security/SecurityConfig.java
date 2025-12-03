@@ -26,8 +26,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Deshabilitamos CSRF porque usaremos Tokens (Stateless)
                 .authorizeHttpRequests(auth -> auth
                         // Rutas PÚBLICAS (Login, Registro, Swagger/OpenAPI si lo usas)
-                        .requestMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/h2-console/**").permitAll()
-                        // Rutas PRIVADAS (Todo lo demás requiere Token)
+                        .requestMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/h2-console/**", "/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess

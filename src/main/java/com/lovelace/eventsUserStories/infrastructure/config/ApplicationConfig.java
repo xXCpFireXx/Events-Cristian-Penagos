@@ -25,10 +25,6 @@ public class ApplicationConfig {
     // Inyectamos el repositorio para buscar usuarios en la DB
     private final ISpringUserRepository userRepository;
 
-    // ========================================================================
-    // SECCIÓN NUEVA: SEGURIDAD (Esto es lo que faltaba)
-    // ========================================================================
-
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
@@ -52,10 +48,6 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    // ========================================================================
-    // SECCIÓN EXISTENTE: CASOS DE USO (Esto lo mantenemos igual)
-    // ========================================================================
 
     // Eventos ----------------------------------------------------------------
     @Bean
