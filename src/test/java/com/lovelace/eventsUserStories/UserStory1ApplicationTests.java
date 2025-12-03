@@ -1,4 +1,4 @@
-package com.lovelace.UserStory_1;
+package com.lovelace.eventsUserStories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

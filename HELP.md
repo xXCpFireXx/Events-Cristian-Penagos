@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'com.lovelace.UserStory-1' is invalid and this project uses 'com.lovelace.UserStory_1' instead.
+* The original package name 'com.lovelace.UserStory-1' is invalid and this project uses 'com.lovelace.eventsUserStories' instead.
 
 # Getting Started
 

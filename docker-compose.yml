@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # --- SERVICIO 1: BASE DE DATOS (MySQL) ---
+  mysqldb:
+    image: mysql:8.0
+    container_name: events-mysql-container
+    ports:
+      - "3307:3306" # Mapeamos al puerto 3307 de tu PC para que no choque si ya tienes un MySQL instalado
+    environment:
+      MYSQL_DATABASE: events_db
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: user123
+    volumes:
+      - mysql_data:/var/lib/mysql # Persistencia: Guarda los datos aunque apagues el contenedor
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # --- SERVICIO 2: TU APLICACIÓN (Spring Boot) ---
+  app:
+    build: .  # Construye la imagen usando el Dockerfile de esta carpeta
+    container_name: events-app-container
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysqldb:
+        condition: service_healthy # Espera a que la BD esté lista antes de arrancar
+    environment:
+      # AQUÍ OCURRE LA MAGIA:
+      # Sobreescribimos la configuración de H2 del application.properties
+      # para conectarnos al contenedor de MySQL ('mysqldb')
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/events_db?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: user1
+      SPRING_DATASOURCE_PASSWORD: user123
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      # Usamos 'update' para que Hibernate cree/actualice las tablas automáticamente si Flyway falla
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+volumes:
+  mysql_data:
